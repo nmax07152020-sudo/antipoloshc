@@ -55,6 +55,20 @@ body.dark footer{color:#a1b1c3;border-color:#29415d}
 body.dark .intro h1{color:#eaf3ff}
 body.dark .section-title{color:#eaf3ff}
 @media(max-width:600px){.brand b{font-size:15px}.brand small{font-size:8px}.header-actions{gap:5px}.header-actions .btn{font-size:11px;padding:8px}}
+
+.multi-select{position:relative;width:100%}
+.multi-select summary{list-style:none;cursor:pointer;border:1px solid #dce5ef;border-radius:10px;padding:11px 12px;min-height:44px;display:flex;align-items:center;justify-content:space-between;color:var(--muted);background:#fff}
+.multi-select summary::-webkit-details-marker{display:none}
+.multi-select[open] summary{border-color:#5b9bd8;box-shadow:0 0 0 3px #2478c81a}
+.summary-chevron{color:var(--blue);font-size:18px}
+.multi-menu{position:absolute;z-index:8;top:calc(100% + 5px);left:0;right:0;max-height:310px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:12px;padding:7px;box-shadow:0 14px 35px #173b601f}
+.multi-option{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;font-size:13px;cursor:pointer;color:var(--ink)}
+.multi-option:hover{background:var(--pale)}
+.multi-option input{width:17px;height:17px;min-height:17px;flex:none;margin:0;accent-color:var(--blue)}
+.multi-option.select-all{border-bottom:1px solid var(--line);border-radius:0;margin-bottom:4px}
+#appointmentOtherText{margin:7px 5px 5px;width:calc(100% - 10px)}
+body.dark .multi-select summary,body.dark .multi-menu{background:#0d1c2d;color:#e4edf7;border-color:#344d69}
+body.dark .multi-option{color:#d4e1ee}
 </style>
 
 <link rel="manifest" href="./manifest.json">
@@ -78,32 +92,55 @@ body.dark .section-title{color:#eaf3ff}
   <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Client Information</div>
   <div class="fields">
    <div class="field full"><label for="appointment">Type of Appointment</label>
-   <select id="appointment"><option value="">Select type of appointment</option>
-    <option>HIV Screening</option><option>STI Screening</option><option>Doctor's Consultation</option><option>ARV Refill</option><option>PrEP</option><option>CD4</option><option>VL</option><option>Clinical Abstract/Medical Certificate Request</option><option>Claim Test Results</option><option>Other: Pen G</option><option value="Other">Other – Please Specify</option>
-   </select>
-   <input id="appointmentOtherText" class="hidden" style="margin-top:8px" placeholder="Please specify other appointment (e.g. Vaccine, Mental Health, PEP)">
-  </div>
+    <input id="appointment" type="hidden" value="">
+    <details class="multi-select" id="appointmentDropdown">
+     <summary><span id="appointmentSummary">Select type of appointment</span><span class="summary-chevron">▾</span></summary>
+     <div class="multi-menu">
+      <label class="multi-option select-all"><input type="checkbox" id="appointmentSelectAll"> <b>Select All</b></label>
+      <label class="multi-option"><input type="checkbox" name="appointmentChoice" value="HIV Screening"> HIV Screening</label>
+      <label class="multi-option"><input type="checkbox" name="appointmentChoice" value="STI Screening"> STI Screening</label>
+      <label class="multi-option"><input type="checkbox" name="appointmentChoice" value="Doctor's Consultation"> Doctor's Consultation</label>
+      <label class="multi-option"><input type="checkbox" name="appointmentChoice" value="ARV Refill"> ARV Refill</label>
+      <label class="multi-option"><input type="checkbox" name="appointmentChoice" value="PrEP"> PrEP</label>
+      <label class="multi-option"><input type="checkbox" name="appointmentChoice" value="CD4"> CD4</label>
+      <label class="multi-option"><input type="checkbox" name="appointmentChoice" value="VL"> VL</label>
+      <label class="multi-option"><input type="checkbox" name="appointmentChoice" value="Clinical Abstract/Medical Certificate Request"> Clinical Abstract/Medical Certificate Request</label>
+      <label class="multi-option"><input type="checkbox" name="appointmentChoice" value="Claim Test Results"> Claim Test Results</label>
+      <label class="multi-option"><input type="checkbox" name="appointmentChoice" value="Other: Pen G"> Other: Pen G</label>
+      <label class="multi-option"><input type="checkbox" name="appointmentChoice" value="Other"> Other – Please Specify</label>
+      <input id="appointmentOtherText" class="hidden" placeholder="Specify other appointment (e.g. Vaccine, Mental Health, PEP)">
+     </div>
+    </details>
+   </div>
    <div class="field"><label for="code">Code</label><input id="code" placeholder="Enter code"></div>
    <div class="field full"><label for="name">Complete Name *</label><input id="name" autocomplete="name" placeholder="Enter complete name"></div>
    <div class="field"><label for="age">Age *</label><input id="age" type="number" min="0" max="120" placeholder="Age"></div>
    <div class="field"><label for="sex">Sex *</label><select id="sex"><option value="">Select</option><option>Male</option><option>Female</option></select></div>
-   <div class="field full"><label>1. Mayroong nararamdaman mga sintomas gaya ng mga sumusunod: <span style="color:#d44">*</span></label><div class="option-list" id="symptomOptions">
-   <label class="option"><input type="checkbox" name="symptoms" value="Lagnat (temperatura higit sa 37.7°)"> Lagnat (temperatura higit sa 37.7°)</label>
-   <label class="option"><input type="checkbox" name="symptoms" value="Pantal (butlig, nana) o pamumula sa balat"> Pantal (butlig, nana) o pamumula sa balat</label>
-   <label class="option"><input type="checkbox" name="symptoms" value="Pananakit o pamamaga ng mga kulani (sa leeg, kilikili, singit)?"> Pananakit o pamamaga ng mga kulani (sa leeg, kilikili, singit)?</label>
-   <label class="option"><input type="checkbox" name="symptoms" value="Pananakit ng lalamunan"> Pananakit ng lalamunan</label>
-   <label class="option"><input type="checkbox" name="symptoms" value="Ubo"> Ubo</label>
-   <label class="option"><input type="checkbox" name="symptoms" value="Pananakit ng ulo o katawan"> Pananakit ng ulo o katawan</label>
-   <label class="option"><input type="checkbox" name="symptoms" value="Panghihina"> Panghihina</label>
-   <label class="option"><input type="checkbox" name="symptoms" value="Wala akong nararamdaman alin man sa nabanggit sa taas"> Wala akong nararamdaman alin man sa nabanggit sa taas</label>
-   <label class="option"><input type="checkbox" name="symptoms" value="Other" id="symptomOther"> Other: <input id="symptomOtherText" class="inline-other" placeholder="Specify other symptom" aria-label="Specify other symptom"></label>
-  </div></div>
+   <div class="field full"><label>1. Mayroong nararamdaman mga sintomas gaya ng mga sumusunod: <span style="color:#d44">*</span></label>
+    <details class="multi-select" id="symptomDropdown">
+     <summary><span id="symptomSummary">Select symptoms</span><span class="summary-chevron">▾</span></summary>
+     <div class="multi-menu" id="symptomOptions">
+      <label class="multi-option"><input type="checkbox" name="symptomChoice" value="Lagnat (temperatura higit sa 37.7°)"> Lagnat (temperatura higit sa 37.7°)</label>
+      <label class="multi-option"><input type="checkbox" name="symptomChoice" value="Pantal (butlig, nana) o pamumula sa balat"> Pantal (butlig, nana) o pamumula sa balat</label>
+      <label class="multi-option"><input type="checkbox" name="symptomChoice" value="Pananakit o pamamaga ng mga kulani (sa leeg, kilikili, singit)?"> Pananakit o pamamaga ng mga kulani (sa leeg, kilikili, singit)?</label>
+      <label class="multi-option"><input type="checkbox" name="symptomChoice" value="Pananakit ng lalamunan"> Pananakit ng lalamunan</label>
+      <label class="multi-option"><input type="checkbox" name="symptomChoice" value="Ubo"> Ubo</label>
+      <label class="multi-option"><input type="checkbox" name="symptomChoice" value="Pananakit ng ulo o katawan"> Pananakit ng ulo o katawan</label>
+      <label class="multi-option"><input type="checkbox" name="symptomChoice" value="Panghihina"> Panghihina</label>
+      <label class="multi-option"><input type="checkbox" name="symptomChoice" value="Wala akong nararamdaman alin man sa nabanggit sa taas" id="symptomNone"> Wala akong nararamdaman alin man sa nabanggit sa taas</label>
+      <label class="multi-option"><input type="checkbox" name="symptomChoice" value="Other" id="symptomOther"> Other – Please Specify</label>
+      <input id="symptomOtherText" class="hidden" placeholder="Please specify other symptom">
+     </div>
+    </details>
+   </div>
    <div class="field full"><label for="mpox">2. Mayroon ka bang anumang kontak sa pinaghihinalaan o nakumpirmang kaso ng Mpox sa loob ng huling 21 araw?</label><select id="mpox"><option value="">Select answer</option><option>Meron</option><option>Wala</option></select></div>
    <div class="field full"><label for="travel">3. May mga bansang nagtrabaho at binisita sa nakalipas na 30 araw?</label><select id="travel"><option value="">Select answer</option><option>Meron</option><option>Wala</option></select></div>
    <div class="field full"><label for="country">4. Kung ang sagot sa number 3 ay meron, anong bansa ito?</label><input id="country" placeholder="Country visited"></div>
    <div class="field full"><label for="address">Address</label><textarea id="address" placeholder="Complete address"></textarea></div>
    <div class="field"><label for="contact">Contact #.</label><input id="contact" type="tel" placeholder="Contact number"></div>
    <div class="field"><label for="temperature">Temperature</label><input id="temperature" type="number" step=".1" placeholder="°C"></div>
+   <div class="field"><label for="quickRes">QuickRes</label><select id="quickRes"><option value="">Select Yes or No</option><option>Yes</option><option>No</option></select></div>
+   <div class="field"><label for="caseManager">Case Manager</label><input id="caseManager" placeholder="Name of case manager who assisted the client"></div>
   </div>
   <div class="section-title" style="margin-top:25px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></svg>Consent & Privacy Acknowledgment</div>
   <div class="checks">
@@ -189,7 +226,7 @@ document.querySelectorAll("#clientForm .field > label").forEach(label=>{
 
 const $=id=>document.getElementById(id);
 let records=JSON.parse(localStorage.getItem("cvm_demo_records")||"[]"),currentEdit=null,activePage="dashboard",range="Monthly";
-const fields=[["name","Complete Name"],["age","Age"],["sex","Sex"],["appointment","Type of Appointment"],["code","Code"],["symptoms","Symptoms"],["mpox","Mpox Contact"],["travel","Travel History"],["country","Country Visited"],["address","Address"],["contact","Contact #"],["temperature","Temperature"]];
+const fields=[["name","Complete Name"],["age","Age"],["sex","Sex"],["appointment","Type of Appointment"],["code","Code"],["symptoms","Symptoms"],["mpox","Mpox Contact"],["travel","Travel History"],["country","Country Visited"],["address","Address"],["contact","Contact #"],["temperature","Temperature"],["quickRes","QuickRes"],["caseManager","Case Manager"]];
 function toast(s){$("toast").textContent=s;$("toast").classList.remove("hidden");setTimeout(()=>$("toast").classList.add("hidden"),2800)}
 function save(){localStorage.setItem("cvm_demo_records",JSON.stringify(records))}
 function showPublic(){$("adminPage").classList.add("hidden");$("publicPage").classList.remove("hidden")}
@@ -197,10 +234,64 @@ function showAdmin(){$("publicPage").classList.add("hidden");$("adminPage").clas
 $("adminOpen").onclick=()=>$("loginModal").classList.remove("hidden");
 $("cancelLogin").onclick=()=>$("loginModal").classList.add("hidden");
 $("doLogin").onclick=()=>{if($("loginUser").value.trim()!=="admin"||$("loginPass").value!=="demo-only"){toast("Demo sign-in: username admin, password demo-only");return}$("loginModal").classList.add("hidden");if(localStorage.getItem("cvm_demo_pw_changed")!=="yes"){$("changePasswordModal").classList.remove("hidden");return}showAdmin();toast("Demo admin view opened")};
+// Keyboard support: Enter submits the login form from either credential field.
+["loginUser","loginPass"].forEach(id=>{
+ $(id).addEventListener("keydown",event=>{
+  if(event.key==="Enter"){event.preventDefault();$("doLogin").click();}
+ });
+});
+// Enter from the password confirmation field completes the first-login password change.
+["tempPassword","newPassword","confirmPassword"].forEach(id=>{
+ $(id).addEventListener("keydown",event=>{
+  if(event.key==="Enter"){event.preventDefault();$("completePasswordChange").click();}
+ });
+});
 $("completePasswordChange").onclick=()=>{let cur=$("tempPassword").value,n=$("newPassword").value,c=$("confirmPassword").value;if(cur!=="demo-only"){toast("Enter the correct temporary password.");return}if(n.length<8){toast("Use at least 8 characters for the new password.");return}if(n!==c){toast("New passwords do not match.");return}localStorage.setItem("cvm_demo_pw_changed","yes");$("changePasswordModal").classList.add("hidden");showAdmin();toast("Demo password-change step completed.")};
 $("backPublic").onclick=showPublic;$("logout").onclick=showPublic;
-$("appointment").addEventListener("change",()=>{$("appointmentOtherText").classList.toggle("hidden",$("appointment").value!=="Other")});
-$("clientForm").onsubmit=e=>{e.preventDefault();const r={id:Date.now(),timestamp:new Date().toISOString()};fields.forEach(([k])=>{if(k==="appointment"){r[k]=$("appointment").value==="Other"?"Other: "+$("appointmentOtherText").value.trim():$("appointment").value;}else if(k==="symptoms"){let vals=[...document.querySelectorAll('#symptomOptions input[type=checkbox]:checked')].map(x=>x.value);const otherText=$("symptomOtherText").value.trim();if(vals.includes("Other")&&otherText)vals=vals.filter(v=>v!=="Other").concat("Other: "+otherText);r[k]=vals.join("; ");}else r[k]=$(k).value});r.consent=$("consent").checked;r.privacy=$("privacy").checked;records.unshift(r);save();e.target.reset();toast("Demo record saved in this browser only. Not sent to Google Sheets.");};
+function updateAppointmentSelection(){
+ const checks=[...document.querySelectorAll('input[name="appointmentChoice"]:checked')];
+ const vals=checks.map(x=>x.value);
+ const otherChosen=vals.includes("Other");
+ $("appointmentOtherText").classList.toggle("hidden",!otherChosen);
+ $("appointment").value=vals.map(v=>v==="Other"&&$("appointmentOtherText").value.trim()?"Other: "+$("appointmentOtherText").value.trim():v).join("; ");
+ $("appointmentSummary").textContent=vals.length?`${vals.length} appointment type${vals.length>1?"s":""} selected`:"Select type of appointment";
+ const all=[...document.querySelectorAll('input[name="appointmentChoice"]')];
+ $("appointmentSelectAll").checked=all.length>0&&all.every(x=>x.checked);
+ $("appointmentSelectAll").indeterminate=checks.length>0&&checks.length<all.length;
+}
+document.querySelectorAll('input[name="appointmentChoice"]').forEach(x=>x.addEventListener("change",updateAppointmentSelection));
+$("appointmentOtherText").addEventListener("input",updateAppointmentSelection);
+$("appointmentSelectAll").addEventListener("change",e=>{
+ document.querySelectorAll('input[name="appointmentChoice"]').forEach(x=>x.checked=e.target.checked);
+ updateAppointmentSelection();
+});
+function updateSymptomSelection(){
+ const checks=[...document.querySelectorAll('input[name="symptomChoice"]:checked')];
+ const none=$("symptomNone");
+ const other=$("symptomOther");
+ if(none.checked){
+  document.querySelectorAll('input[name="symptomChoice"]').forEach(x=>{if(x!==none)x.checked=false});
+ }
+ if(other.checked){$("symptomOtherText").classList.remove("hidden")}
+ else {$("symptomOtherText").classList.add("hidden")}
+ const selected=[...document.querySelectorAll('input[name="symptomChoice"]:checked')];
+ const labels=selected.map(x=>x.value==="Other"&&$("symptomOtherText").value.trim()?"Other: "+$("symptomOtherText").value.trim():x.value);
+ $("symptomSummary").textContent=labels.length?`${labels.length} selected · ${labels.slice(0,2).join(", ")}${labels.length>2?"…":""}`:"Select symptoms";
+}
+document.querySelectorAll('input[name="symptomChoice"]').forEach(x=>x.addEventListener("change",()=>{
+ if(x=== $("symptomNone") && x.checked){
+  document.querySelectorAll('input[name="symptomChoice"]').forEach(y=>{if(y!==x)y.checked=false});
+ }else if(x.checked && $("symptomNone").checked){$("symptomNone").checked=false}
+ updateSymptomSelection();
+}));
+$("symptomOtherText").addEventListener("input",updateSymptomSelection);
+
+document.addEventListener("click",e=>{
+ const dd=$("appointmentDropdown");
+ if(dd&&dd.open&&!dd.contains(e.target))dd.open=false;
+ const sd=$("symptomDropdown");if(sd&&sd.open&&!sd.contains(e.target))sd.open=false;
+});
+$("clientForm").onsubmit=e=>{e.preventDefault();const r={id:Date.now(),timestamp:new Date().toISOString()};fields.forEach(([k])=>{if(k==="appointment"){const vals=[...document.querySelectorAll('input[name="appointmentChoice"]:checked')].map(x=>x.value);r[k]=vals.map(v=>v==="Other"&&$("appointmentOtherText").value.trim()?"Other: "+$("appointmentOtherText").value.trim():v).join("; ");}else if(k==="symptoms"){let vals=[...document.querySelectorAll('input[name="symptomChoice"]:checked')].map(x=>x.value);const otherText=$("symptomOtherText").value.trim();if(vals.includes("Other")&&otherText)vals=vals.filter(v=>v!=="Other").concat("Other: "+otherText);r[k]=vals.join("; ");}else r[k]=$(k).value});r.consent=$("consent").checked;r.privacy=$("privacy").checked;records.unshift(r);save();e.target.reset();document.querySelectorAll('input[name="appointmentChoice"]').forEach(x=>x.checked=false);$("appointmentSelectAll").checked=false;$("appointmentOtherText").classList.add("hidden");$("appointmentDropdown").open=false;updateAppointmentSelection();document.querySelectorAll('input[name="symptomChoice"]').forEach(x=>x.checked=false);$("symptomOtherText").value="";$("symptomDropdown").open=false;updateSymptomSelection();toast("Demo record saved in this browser only. Not sent to Google Sheets.");};
 document.querySelectorAll(".nav-btn[data-page]").forEach(b=>b.onclick=()=>{document.querySelectorAll(".nav-btn[data-page]").forEach(x=>x.classList.remove("active"));b.classList.add("active");renderPage(b.dataset.page)});
 function countBy(k){const m={};records.forEach(r=>{let v=r[k]||"Not specified";m[v]=(m[v]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1])}
 function stat(n,l,ico){return `<div class="stat"><div class="ico">${ico}</div><strong>${n}</strong><span>${l}</span></div>`}
